@@ -1,0 +1,3 @@
+discord==1.0.1
+discord.py
+docker-compose==1.26.2

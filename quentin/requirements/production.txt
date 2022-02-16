@@ -1,0 +1,3 @@
+-r ommon.txt
+
+mysql-connector-python
