@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  service_db:
+    image: mariadb:10.3
+    env_file: quentin/environment/quentin_env
+
+  redis:
+    image: redis:alpine
+    container_name: service_redis
+
+  quentin:
+    build: .    
+    image: quentin:devel
+    restart: on-failure
+    container_name: quentin_container
+    command: make run
+    env_file: quentin/environment/quentin_env
+    volumes:
+      - .:/app
+      - static_data:/app/static
+    depends_on:
+      - service_db
+
+volumes:
+  static_data:
