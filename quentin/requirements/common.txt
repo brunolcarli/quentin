@@ -1,3 +1,5 @@
 discord==1.0.1
-discord.py
 docker-compose==1.26.2
+discord-components==2.1.2
+discord.py-message-components==1.7.5.4
+redis==4.1.4
