@@ -126,8 +126,24 @@ async def previous_page(i: discord.Interaction, button):
     await get_trends(ctxn, page)
 
 
-@client.command()
+@client.command(aliases=['get_movies', 'trends', 'list_movies'])
 async def get_trends(ctx, *args):
+    """
+    List five trending movies information.
+    The list are splitted in sections, use the up/down arrow buttons to scroll
+    between sections of a current page.
+    Use next/previous buttons to switch between pages.
+
+    Params: <name>:<value>
+    Valid params and values:
+        - page: integers from 1 to max available pages;
+        - media_type: [movie, person, tv, all];
+        - time_window: [day, week];
+
+    Usage examples:
+        /get_trends page:15
+        /get_trends time_window:week page:5
+    """
     global responses
     global section
     global page_key
@@ -136,7 +152,6 @@ async def get_trends(ctx, *args):
 
     if not args:  # default search
         args = ('page:1', 'media_type:movie', 'time_window:day')
-
 
     # preprocess query arguments
     media_type = next(iter([(i+':').split(':')[1] for i in args if 'media' in i]), 'movie')
