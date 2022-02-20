@@ -1,19 +1,20 @@
 import mysql.connector
-from quentin.settings.production import MYSQL_CONFIG
+from quentin.settings import MYSQL_CONFIG
 
 
 class Database:
 
-    def __init__(self):
+    def __init__(self, database):
         self.connection = self.connect()
         self.cursor = self.connection.cursor()
+        self.database = database
 
     def connect(self):
         connection = mysql.connector.connect(
             host=MYSQL_CONFIG['MYSQL_HOST'],
             user=MYSQL_CONFIG['MYSQL_USER'],
             password=MYSQL_CONFIG['MYSQL_PASSWORD'],
-            database=MYSQL_CONFIG['MYSQL_DATABASE']
+            database=self.database
         )
         return connection
 

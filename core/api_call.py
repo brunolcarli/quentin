@@ -1,5 +1,5 @@
 import requests
-from quentin.settings.common import TMDB_KEY, TMDB_API
+from quentin.settings import TMDB_KEY, TMDB_API
 
 
 def get_trending(media, time_ref, page):

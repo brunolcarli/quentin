@@ -10,7 +10,8 @@ from discord.ext import commands
 from discord import ActionRow, Button, ButtonStyle
 from redis import Redis
 from ast import literal_eval as evl
-from quentin.settings.common import __version__, IMG_URL, REDIS_HOST, REDIS_PORT
+from quentin.settings import (__version__, IMG_URL, REDIS_HOST,
+                              REDIS_PORT, MYSQL_CONFIG)
 from core.api_call import get_trending
 from core.util import paginate
 from core.db_handler import Database
@@ -264,7 +265,7 @@ async def upload(ctx):
         if file.content_type not in valid_extensions:
             return await ctx.send(f'Invalid file extension {file.content_type}')
 
-    db = Database()
+    db = Database(MYSQL_CONFIG['database'])
     for file in files:
         extension = file.content_type.split('/')[1]
         file_request = requests.get(file.url)
