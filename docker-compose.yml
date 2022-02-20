@@ -15,7 +15,7 @@ services:
     image: quentin:devel
     restart: on-failure
     container_name: quentin_container
-    command: make run
+    command: make docker_run
     env_file: quentin/environment/quentin_env
     volumes:
       - .:/app
