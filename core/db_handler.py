@@ -5,9 +5,9 @@ from quentin.settings import MYSQL_CONFIG
 class Database:
 
     def __init__(self, database):
+        self.database = database
         self.connection = self.connect()
         self.cursor = self.connection.cursor()
-        self.database = database
 
     def connect(self):
         connection = mysql.connector.connect(
@@ -27,7 +27,6 @@ class Database:
         return self.cursor.fetchall()
 
     def insert(self, user_id, file, url, ext):
-        
         query =  f'''
             INSERT INTO storage (user_id, file, url, extension)
             VALUES ({user_id}, {file}, {url}, {ext});
@@ -40,7 +39,7 @@ class Database:
         self.connection.close()
 
 
-def migrate():
+def migrate(database):
     """
     Creates initial database schema.
     """
@@ -48,14 +47,14 @@ def migrate():
     connection = mysql.connector.connect(
         host=MYSQL_CONFIG['MYSQL_HOST'],
         user=MYSQL_CONFIG['MYSQL_USER'],
-        password=MYSQL_CONFIG['MYSQL_PASSWORD'],
+        password=MYSQL_CONFIG['MYSQL_PASSWORD']
     )
     cursor = connection.cursor()
     try:
-        cursor.execute('CREATE DATABASE quentin;')
+        cursor.execute(f'CREATE DATABASE {database};')
     except mysql.connector.errors.DatabaseError:
         pass
-    cursor.execute('USE quentin;')
+    cursor.execute(f'USE {database};')
     cursor.execute(
         '''
         CREATE TABLE IF NOT EXISTS storage (
@@ -70,3 +69,20 @@ def migrate():
     )
     connection.close()
     print('Migration completed!')
+
+
+def flush_test_database():
+    """
+    Remove test database.
+    """
+    print('Removing test database...')
+    connection = mysql.connector.connect(
+        host=MYSQL_CONFIG['MYSQL_HOST'],
+        user=MYSQL_CONFIG['MYSQL_USER'],
+        password=MYSQL_CONFIG['MYSQL_PASSWORD'],
+        database='test_db'
+    )
+    cursor = connection.cursor()
+    cursor.execute('DROP SCHEMA test_db;')
+    connection.close()
+    print('Clean!')
