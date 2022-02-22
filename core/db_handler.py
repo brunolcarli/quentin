@@ -76,12 +76,17 @@ def flush_test_database():
     Remove test database.
     """
     print('Removing test database...')
-    connection = mysql.connector.connect(
-        host=MYSQL_CONFIG['MYSQL_HOST'],
-        user=MYSQL_CONFIG['MYSQL_USER'],
-        password=MYSQL_CONFIG['MYSQL_PASSWORD'],
-        database='test_db'
-    )
+    try:
+        connection = mysql.connector.connect(
+            host=MYSQL_CONFIG['MYSQL_HOST'],
+            user=MYSQL_CONFIG['MYSQL_USER'],
+            password=MYSQL_CONFIG['MYSQL_PASSWORD'],
+            database='test_db'
+        )
+    except mysql.connector.errors.ProgrammingError:
+        print('No need for cleaning test garbage.')
+        return
+
     cursor = connection.cursor()
     cursor.execute('DROP SCHEMA test_db;')
     connection.close()

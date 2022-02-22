@@ -12,6 +12,7 @@ docker_run:
 	make run
 
 test:
+	python -c "from core.db_handler import flush_test_database; flush_test_database()"
 	python3 -c 'from core.db_handler import migrate; migrate("test_db")'
 	pytest tests
 	python -c "from core.db_handler import flush_test_database; flush_test_database()"
