@@ -4,7 +4,7 @@ Common shared system settings.
 import os
 
 
-__version__ = '0.0.0.'
+__version__ = '0.0.1.'
 
 # General configs
 ENV_REF = os.environ.get('ENV_REF', 'development')
