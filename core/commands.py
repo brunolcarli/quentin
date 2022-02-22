@@ -36,6 +36,14 @@ async def on_ready():
     global responses
 
 
+@client.command(aliases=['v'])
+async def version(ctx):
+    """
+    Return service version.
+    """
+    return await ctx.send(f'Running Quentin vesrion: `{__version__}`')
+
+
 @client.on_click()
 async def section_up(i: discord.Interaction, button):
     global responses
@@ -250,8 +258,17 @@ async def get_trends(ctx, *args):
         responses.append(response)
 
 
-@client.command(aliases=['send_file'])
+@client.command(aliases=['send_file', 'up'])
 async def upload(ctx):
+    """
+    Upload a file to database...
+    It is necessary tha a file is attached to upload.
+    File formats support:
+        - .png
+        - .mp4
+
+    If succesfull returns the item ID.
+    """
     files = ctx.message.attachments
     user_id = ctx.message.author.id
     if not files:
@@ -273,8 +290,18 @@ async def upload(ctx):
     db.close()
 
 
-@client.command(aliases=['get_file'])
+@client.command(aliases=['get_file', 'dl'])
 async def download(ctx, item_id=None):
+    """
+    Downloads an stored file by its ID.
+    ID is required.
+    The ID must exist.
+
+    Example:
+        /download 9
+    """
+
+
     if not item_id:
         return await ctx.send('Must inform item ID.')
 
