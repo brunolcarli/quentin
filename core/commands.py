@@ -15,7 +15,7 @@ from core.util import paginate, FileTransformer
 from core.db_handler import Database
 
 
-client = commands.Bot(command_prefix='/')
+client = commands.AutoShardedBot(command_prefix='/')
 cache = Redis(
     host=REDIS_HOST,
     port=REDIS_PORT,
