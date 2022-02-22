@@ -1,7 +1,7 @@
 from core.api_call import get_trending
 
 
-class TestDabaseFunctionality:
+class TestAPIRequests:
     """
     Test the API requests functions.
     """

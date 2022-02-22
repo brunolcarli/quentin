@@ -1,9 +1,9 @@
 from core.util import paginate
 
 
-class TestDabaseFunctionality:
+class TestUtilsTools:
     """
-    Test the API requests functions.
+    Test the utilitaries.
     """
 
     # create a list of 20 items

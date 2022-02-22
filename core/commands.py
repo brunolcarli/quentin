@@ -3,8 +3,6 @@ Bot available commands definition.
 """
 from io import BytesIO
 import json
-import requests
-from base64 import b64encode, b64decode
 import discord
 from discord.ext import commands
 from discord import ActionRow, Button, ButtonStyle
@@ -13,7 +11,7 @@ from ast import literal_eval as evl
 from quentin.settings import (__version__, IMG_URL, REDIS_HOST,
                               REDIS_PORT, MYSQL_CONFIG)
 from core.api_call import get_trending
-from core.util import paginate
+from core.util import paginate, FileTransformer
 from core.db_handler import Database
 
 
@@ -265,11 +263,11 @@ async def upload(ctx):
         if file.content_type not in valid_extensions:
             return await ctx.send(f'Invalid file extension {file.content_type}')
 
-    db = Database(MYSQL_CONFIG['database'])
+    db = Database(MYSQL_CONFIG['MYSQL_DATABASE'])
     for file in files:
         extension = file.content_type.split('/')[1]
-        file_request = requests.get(file.url)
-        dumped = json.dumps(b64encode(file_request.content).decode('utf-8'))
+        file_data = FileTransformer.get_file_from_url(file.url)
+        dumped = FileTransformer.encode(file_data)
         item_id = db.insert(user_id, dumped, json.dumps(file.url), json.dumps(extension))
         await ctx.send(f'Inserted file on database with ID: {item_id}')
     db.close()
@@ -280,7 +278,7 @@ async def download(ctx, item_id=None):
     if not item_id:
         return await ctx.send('Must inform item ID.')
 
-    db = Database()
+    db = Database(MYSQL_CONFIG['MYSQL_DATABASE'])
     results = db.select(item_id)
 
     if not results:
@@ -288,7 +286,7 @@ async def download(ctx, item_id=None):
 
     record = results[0]
     id, user_id, dump, url, extension, date = record
-    file = b64decode(dump)
+    file = FileTransformer.decode(dump)
 
     embed = discord.Embed(color=0x1E1E1E, type='rich')
     embed.add_field(name='Stored by:', value=user_id, inline=False)
