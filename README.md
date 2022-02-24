@@ -21,15 +21,96 @@
 
 # Invite
 
-`to do`
+To add the bot to your discord server use this [invitation](#addInviteLink).
 
-# Usage
 
-`to do`
 
-# Development
+# Development And Configuration
 
-`to do`
+
+This section explains step-by-step the service configuration and running.
+
+## Primary dependecies
+
+To configure the service, first of all you should get two kinds of **tokens** from base platforms thaht powers the software:
+
+- An API token from [The Movie Database API](https://developers.themoviedb.org/3/getting-started/introduction);
+- A bot token from [Discord Developers Portal](https://discord.com/developers/applications);
+
+
+There are two basic ways to run this service:
+
+- **Local machine*:
+    + It is suggested for development;
+- **Docker**:
+    + It is suggested for production;
+    + It is suggested when the environment or dependencies are not possible to configure on local machine;
+
+## Run in local machine
+
+### Local dependencies:
+
+You smust have these dependencies installed on your machine:
+
+- Python >= 3.8
+- Redis-server
+- Mysql-server
+
+
+The service is a python based software, so you have to create a [python virtual environment](https://docs.python.org/3/tutorial/venv.html) to install the requirements, so, create and python venv, export a global environment variable to `development` and install the requirements from Makefile:
+
+```
+$ mkvirtualenv quentin
+$ (quentin) export ENV_REF=development
+$ (quentin) make install
+```
+
+Create a copy of the environment file template in `quentin/environment/export_template` and fill the values for the variables, such as the database user, host and passwords, the source the environment file you just created:
+
+```
+$ source quentin/environment/my_env_vars
+```
+
+Migrate the database:
+
+```
+$ make migrate
+```
+
+Finally run the service:
+
+```
+$ make run
+```
+
+## Run in Docker
+
+### Local dependencies:
+
+- Docker
+- Python-pip
+
+Install `docker-compose` from pip:
+
+```
+$ pip install docker-compose
+```
+
+Create an encironment file called `quentin_env` from the template in `quentin/environment/docker_template` and fill the blank variables, at the end you should have a filled env file in `quentin/environment/quentin_env`. Docker compose will look for the mentioned file in the mentioned directory. build and run the container:
+
+```
+$ docker-compose build && docker-compose up
+```
+
+## Testing
+
+For testing you should follow the steps for running the service in your local machine, above described. In a virtual env, install the requirements and fill your env vars to set up database configurations, then run tests from makefile:
+
+
+```
+$ make test
+```
+
 
 ## References
 
