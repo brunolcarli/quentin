@@ -1,0 +1,13 @@
+ENV_REF=production
+TOKEN=
+TMDB_KEY=
+
+# databases
+REDIS_HOST=service_redis
+REDIS_PORT=6379
+
+MYSQL_HOST=service_db
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_DATABASE=quentin
+MYSQL_ROOT_PASSWORD=
